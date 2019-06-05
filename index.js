@@ -1,5 +1,6 @@
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
+const fs = require('fs');
 
 
 ListFiles = async (bucketName) => {
@@ -13,11 +14,7 @@ ListFiles = async (bucketName) => {
     });
 }
 
- uploadFile = async (bucketName, filename) => {
-    // [START storage_upload_file]
-    // Imports the Google Cloud client library
-    const {Storage} = require('@google-cloud/storage');
-  
+ uploadFile = async (bucketName, filename) => {  
     // Creates a client
     const storage = new Storage();
   
@@ -45,12 +42,19 @@ ListFiles = async (bucketName) => {
     // [END storage_upload_file]
   }
 
+iterateFolder = async (err, files) => {
+    files.forEach(
+        async file => await uploadFile(process.env.IMG_STORE_BUCKET_NAME, 
+            process.env.IMG_STORE_UPLOAD_FOLDER + "/" + file))
+}
+
 main = async () => {
     const bucketName = process.env.IMG_STORE_BUCKET_NAME;
+    
     ListFiles(bucketName)
     
-    await uploadFile(bucketName, process.env.IMG_STORE_UPLOAD_FOLDER + "/example-2.txt")
-    
+    fs.readdir(process.env.IMG_STORE_UPLOAD_FOLDER, await iterateFolder)
+   
     ListFiles(bucketName)
 }
  
