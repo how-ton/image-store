@@ -5,3 +5,6 @@ node_modules/
 # Application Secrets
 .credentials
 .env
+
+# Working Upload Folder
+uploads 
