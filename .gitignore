@@ -1,0 +1,7 @@
+
+# Node Dependencoes
+node_modules/
+
+# Application Secrets
+.credentials
+.env
